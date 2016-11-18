@@ -51,7 +51,7 @@ class Orc(Monster):
     ''' generic Orc class '''
     def __init__(self,
                  name = "Dorque da Orc",
-                 maxHealth = 100,
+                 maxHealth = 10,
                  speed = 25,
                  stamina = 25,
                  strength = 8,
@@ -65,6 +65,12 @@ class Orc(Monster):
         super(Orc, self).__init__(name, maxHealth, speed, stamina, strength,
                                   intelligence, dexterity, numberOfPotions,
                                   inventory, aggression, awareness, fear)
+
+class SolarAngel(Monster):
+    '''generic angel class'''
+    def __init__(self,
+                 name = ''):
+        pass
 
 
 def random_monster():

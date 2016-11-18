@@ -70,7 +70,7 @@ class Character(object):
 
     @property
     def potionCount(self):
-        ''' counts your potions... :/'''
+        ''' counts your potions... :/ <- david, that is an emoji'''
         return len(self.potions)
 
     @property
@@ -87,6 +87,9 @@ class Character(object):
         ''' calculates the overall d20 OGL Armor Class (AC) value'''
         return 10 + self.dexBonus + self.armor.defense
 
+    def get_damaged(self,damage):
+        '''inflicts camage from outside source'''
+        self.health -= damage
     def heal(self):
         ''' randomly heal 1d8+1 points
 
@@ -158,7 +161,7 @@ class Character(object):
         attack = randint(1,20) + self.strBonus + self.weapon.attack
         if attack >= enemy.AC:
             damage = self.weapon.damage + self.strBonus
-            enemy.health -= damage
+            enemy.get_damaged(damage)
             success = True
             message = self.name + " hits " + enemy.name + " and does " +\
                       str(damage) + " damage."
