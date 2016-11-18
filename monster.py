@@ -65,13 +65,21 @@ class Orc(Monster):
         super(Orc, self).__init__(name, maxHealth, speed, stamina, strength,
                                   intelligence, dexterity, numberOfPotions,
                                   inventory, aggression, awareness, fear)
+#work by David Snider------------------------------
+class WrathMan(Monster):
+    '''generic wrath class
 
-class SolarAngel(Monster):
-    '''generic angel class'''
+       converts half of damage taken into strength
+       takes other half of damage'''
     def __init__(self,
-                 name = ''):
-        pass
-
+                 name = 'Wrath',
+                 maxHealth = 50,
+                 fear = 0):
+        super(WrathMan,self).__init__(name = name,maxHealth = maxHealth,
+                                      fear = fear)
+    def get_damaged(self,damage):
+        self.strength = damage//2
+        self.health -= damage//2
 
 def random_monster():
     '''generate a monster at random
@@ -82,8 +90,9 @@ def random_monster():
     
     monster = Monster()
     orc = Orc()
+    wrath = WrathMan()
     
-    listOfMonsters = [monster, orc]
+    listOfMonsters = [monster, orc, wrath]
     return choice(listOfMonsters)
 
 
