@@ -60,8 +60,8 @@ def combat(one, two):
 
 if __name__ == "__main__":
     hero = Character()
-    orc = Monster(name = "Dorque da Orc")
+    wrath = WrathMan()
 
-    combat(hero, orc)
+    combat(hero, wrath)
 
     
