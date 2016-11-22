@@ -71,19 +71,32 @@ class WrathMan(Monster):
 
        converts half of damage taken into strength
        takes other half of damage'''
-    def __init__(self,
-                 name = 'Wrath',
-                 maxHealth = 20,
-                 fear = 0):
-        super(WrathMan,self).__init__(name = name,maxHealth = maxHealth,
-                                      fear = fear)
+    def __init__(self,name = 'Wrath'):
+        maxHealth = randint(20,50)
+        speed = randint(20,30)
+        stamina = randint(20,30)
+        strength = randint(8,15)
+        dexterity = randint(6,10)
+        constitution = randint(6,10)
+        intelligence = randint(6,10)
+        wisdom = randint(6,10)
+        charisma = randint(4,14)
+        numberOfPotions = randint(0,8)
+        inventory = []
+        aggression = randint(20,70)
+        awareness = randint(0,30)
+        fear = 0
+        super(WrathMan,self).__init__(name,maxHealth,speed,stamina,
+                                      strength,dexterity,constitution,
+                                      intelligence,wisdom,charisma,
+                                      numberOfPotions,inventory,
+                                      aggression,awareness,fear)
     def get_damaged(self,damage):
         '''gets stronger and more aggressive with every hit
            takes half damage'''
         self.strength += damage//2
         self.health -= damage//2
-        self.aggression += damage//2
-        self.awareness += damage//4
+        self.aggression += damage
 
 def random_monster():
     '''generate a monster at random
