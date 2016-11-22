@@ -124,16 +124,12 @@ class Character(object):
         ''' calculates the overall d20 OGL Armor Class (AC) value'''
         return 10 + self.dexBonus + self.armor.defense
 
-<<<<<<< HEAD
-    def get_damaged(self,damage):
-        '''inflicts camage from outside source'''
-        self.health -= damage
-=======
+
     def get_damaged(self, damage):
         ''' inflicts damage from an outside source '''
         self.health -= damage
 
->>>>>>> upstream/master
+
     def heal(self):
         ''' randomly heal 1d8+1 points
 
@@ -206,16 +202,6 @@ class Character(object):
             success = False
             message = self.name + "fumbles their attack!"
 
-<<<<<<< HEAD
-        attack = randint(1,20) + self.strBonus + self.weapon.attack
-        if attack >= enemy.AC:
-            damage = self.weapon.damage + self.strBonus
-            enemy.get_damaged(damage)
-            success = True
-            message = self.name + " hits " + enemy.name + " and does " +\
-                      str(damage) + " damage."
-=======
->>>>>>> upstream/master
         else:
             attack = roll + self.strBonus + self.weapon.attack
             if attack >= enemy.AC:

@@ -166,16 +166,10 @@ def create_player():
     return player
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    hero = Character()
-    wrath = WrathMan()
-=======
     hero = create_player()
     print(hero)
     #hero = Character()
     orc = Monster(name = "Dorque da Orc")
->>>>>>> upstream/master
-
-    combat(hero, wrath)
+    combat(hero,orc)
 
     

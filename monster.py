@@ -52,25 +52,29 @@ class Monster(Character):
             return "AI_error"
 
 class Orc(Monster):
-<<<<<<< HEAD
-    ''' generic Orc class '''
-    def __init__(self,
-                 name = "Dorque da Orc",
-                 maxHealth = 10,
-                 speed = 25,
-                 stamina = 25,
-                 strength = 8,
-                 intelligence = 8,
-                 dexterity = 8,
-                 numberOfPotions = 2,
-                 inventory = [],
-                 aggression = 80,
-                 awareness = 30,
-                 fear = 20):
-        super(Orc, self).__init__(name, maxHealth, speed, stamina, strength,
-                                  intelligence, dexterity, numberOfPotions,
+ ''' generic Orc class
+
+        this class '''
+    def __init__(self, name = "Dorque da Orc"):
+        orcName = name
+        maxHealth = randint(1,8)
+        speed = 25
+        stamina = 25
+        strength = randint(8,10)
+        dexterity = randint(10,12)
+        constitution = 10
+        intelligence = 8
+        wisdom = 10
+        charisma = 10
+        numberOfPotions = 2
+        inventory = []
+        aggression = 80
+        awareness = 30
+        fear = 20
+        super(Orc, self).__init__(orcName, maxHealth, speed, stamina, strength,
+                                  dexterity, constitution, intelligence,
+                                  wisdom, charisma, numberOfPotions,
                                   inventory, aggression, awareness, fear)
-#work by David Snider(DAS)------------------------------
 class WrathMan(Monster):
     '''generic wrath class
 
@@ -102,31 +106,7 @@ class WrathMan(Monster):
         self.strength += damage//2
         self.health -= damage//2
         self.aggression += damage
-=======
-    ''' generic Orc class
-
-        this class '''
-    def __init__(self, name = "Dorque da Orc"):
-        orcName = name
-        maxHealth = randint(1,8)
-        speed = 25
-        stamina = 25
-        strength = randint(8,10)
-        dexterity = randint(10,12)
-        constitution = 10
-        intelligence = 8
-        wisdom = 10
-        charisma = 10
-        numberOfPotions = 2
-        inventory = []
-        aggression = 80
-        awareness = 30
-        fear = 20
-        super(Orc, self).__init__(orcName, maxHealth, speed, stamina, strength,
-                                  dexterity, constitution, intelligence,
-                                  wisdom, charisma, numberOfPotions,
-                                  inventory, aggression, awareness, fear)
->>>>>>> upstream/master
+   
 
 def random_monster():
     '''generate a monster at random
