@@ -5,18 +5,25 @@
 ''' Module that contains our game's Character base class
     CHANGELOG:
     11/17/2016
-    added a combat_choice method for use by player
+      added a combat_choice method for use by player
     11/17/2016
-    changed the Character class. weapon, armor and potion attributes.
-    These are all objects imnported from the new items module. These
+      changed the Character class. weapon, armor and potion attributes.
+    These are all objects imported from the new items module. These
     attributes are all implemented as objects.  Potions are implemented
     additionally as a list of objects.  This leaves inventory currently
     empty. also, a new constructor parameter has been added:
         numberOfPotions = 2. this replaces the old inventory item
         ["potion", 2]...
     Additionally, a number of properties were added to the base class:
-        strBonus, dexBonus, intBonus, potionCount, potionList, and defense.
+        strBonus, dexBonus, intBonus, potionCount, potionList, and AC.
         see the property docstrings for more information
+    11/21/2016
+      added constitution, wisdom, and charisma attributes. modified attack
+    to do a minimum of 1 damage, as well as added the possibility of a
+    critical fumble (roll of 1).
+    11/21/2016
+      added __str__ method to allow easy printing.
+    
 
 '''
 from random import randint
@@ -30,10 +37,15 @@ class Character(object):
                  speed = 25,
                  stamina = 25,
                  strength = 10,
-                 intelligence = 10,
                  dexterity = 10,
+                 constitution = 10,
+                 intelligence = 10,
+                 wisdom = 10,
+                 charisma = 10,
                  numberOfPotions = 2,
-                 inventory = []):
+                 inventory = [],
+                 weapon = "",
+                 armor = ""):
         ''' All values represent the average score '''
         self.name = name
         self.maxHealth = maxHealth
@@ -42,31 +54,56 @@ class Character(object):
         self.hunger = 100 # 100 = Full, 0 = starving
         self.stamina = stamina
         self.strength = strength
-        self.intelligence = intelligence
         self.dexterity = dexterity
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom = wisdom
+        self.charisma = charisma
         self.inventory = []
         for item in inventory:
             self.inventory.append(item[:])
         self.potions = []
         for i in range(numberOfPotions):
             self.potions.append(Potion())
-        self.weapon = Weapon()
-        self.armor = Armor()
+        if weapon == "":
+            self.weapon = Weapon()
+        else:
+            self.weapon = weapon
+        if armor == "":
+            self.armor = Armor()
+        else:
+            self.armor = armor
 
     @property
     def strBonus(self):
         ''' calculates d20 OGL bonus for strength'''
-        return (self.dexterity//2) - 5
+        return (self.strength//2) - 5
 
     @property
     def dexBonus(self):
         ''' calculates d20 OGL bonus for dexterity'''
-        return (self.strength//2) - 5
+        return (self.dexterity//2) - 5
+
+    @property
+    def conBonus(self):
+        ''' calculates d20 OGL bonus for dexterity'''
+        return (self.constitution//2) - 5
 
     @property
     def intBonus(self):
         ''' calculates d20 OGL bonus for intelligence'''
         return (self.intelligence//2) - 5
+
+    @property
+    def wisBonus(self):
+        ''' calculates d20 OGL bonus for dexterity'''
+        return (self.wisdom//2) - 5
+
+    @property
+    def chaBonus(self):
+        ''' calculates d20 OGL bonus for dexterity'''
+        return (self.charisma//2) - 5
+
 
     @property
     def potionCount(self):
@@ -87,9 +124,16 @@ class Character(object):
         ''' calculates the overall d20 OGL Armor Class (AC) value'''
         return 10 + self.dexBonus + self.armor.defense
 
+<<<<<<< HEAD
     def get_damaged(self,damage):
         '''inflicts camage from outside source'''
         self.health -= damage
+=======
+    def get_damaged(self, damage):
+        ''' inflicts damage from an outside source '''
+        self.health -= damage
+
+>>>>>>> upstream/master
     def heal(self):
         ''' randomly heal 1d8+1 points
 
@@ -157,7 +201,12 @@ class Character(object):
 
         success = False
         message = ""
+        roll = randint(1,20)
+        if roll == 1:
+            success = False
+            message = self.name + "fumbles their attack!"
 
+<<<<<<< HEAD
         attack = randint(1,20) + self.strBonus + self.weapon.attack
         if attack >= enemy.AC:
             damage = self.weapon.damage + self.strBonus
@@ -165,8 +214,20 @@ class Character(object):
             success = True
             message = self.name + " hits " + enemy.name + " and does " +\
                       str(damage) + " damage."
+=======
+>>>>>>> upstream/master
         else:
-            message = self.name + " misses " + enemy.name + "."
+            attack = roll + self.strBonus + self.weapon.attack
+            if attack >= enemy.AC:
+                damage = self.weapon.damage + self.strBonus
+                if damage < 1:
+                    damage = 1
+                enemy.get_damaged(damage)
+                success = True
+                message = self.name + " hits " + enemy.name + " and does " +\
+                          str(damage) + " damage."
+            else:
+                message = self.name + " misses " + enemy.name + "."
 
         return success, message
 
@@ -182,6 +243,21 @@ class Character(object):
                    Your Choice [A/h/f]: """)
         return choice
 
+    def __str__(self):
+        info = "NAME:       " + self.name + "\n" +\
+               "-----------------------------------\n" +\
+               "|STR| "+str(self.strength)+"\t"+str(self.strBonus)+"\n"+\
+               "|DEX| "+str(self.dexterity)+"\t"+str(self.dexBonus)+"\n"+\
+               "|CON| "+str(self.constitution)+"\t"+str(self.conBonus)+"\n"+\
+               "|INT| "+str(self.intelligence)+"\t"+str(self.intBonus)+"\n"+\
+               "|WIS| "+str(self.wisdom)+"\t"+str(self.wisBonus)+"\n"+\
+               "|CHA| "+str(self.charisma)+"\t"+str(self.chaBonus)+"\n"+\
+               "-----------------------------------\n" +\
+               "Potions: "+self.potionList+"\n"+\
+               "AC:      "+str(self.AC)+"\n"+\
+               "-----------------------------------\n"
+        return info
+    
 if __name__ == "__main__":
     hero = Character(name = "Mr. Peebles")
     orc = Character(name = "Magilla")
@@ -190,7 +266,8 @@ if __name__ == "__main__":
     hero.heal()
     print(hero.potionList)
     print(hero.attack(orc))
-    
+    print(hero)
+    print(orc)
 
     
 
