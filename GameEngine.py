@@ -120,8 +120,97 @@ def create_player():
                          charisma = gCharisma, numberOfPotions = gPotionCount,
                          weapon = gWeapon, armor = gArmor, maxHealth = gHealth)
 
-    def four_d_six():
-        return Character()
+    def four_d_six(cheat = False):
+        ''' 4d6, use best three, arrange to suit
+
+            6 sets of 4d6 are rolled,
+            in each set, the top three dice are kept and added together.
+            Then these scores are assigned by the user. This method usually
+            has the highest satisfaction for the player, but is also the
+            most complicated, due to the many choices required.
+'''
+        #generate the scores
+        daScores = []
+        for i in range(6):
+            rolls = []
+            for j in range(4):
+                rolls.append(randint(1,6))
+            rolls.remove(min(rolls))
+            daScores.append(sum(rolls))
+        #choose strength
+        valid = False
+        while not valid:
+            print('SCORES:',daScores)
+            inputStr = int(input("Which value for Strength? "))
+            if inputStr in daScores:
+                valid = True
+                daScores.remove(inputStr)
+            else:
+                print('*** not a valid score *** \n')
+
+        #choose constitution
+        valid = False
+        while not valid:
+            print('SCORES:',daScores)
+            inputCon = int(input("Which value for Constitution? "))
+            if inputCon in daScores:
+                valid = True
+                daScores.remove(inputCon)
+            else:
+                print('*** not a valid score *** \n')
+
+        #choose dexterity
+        valid = False
+        while not valid:
+            print('SCORES:',daScores)
+            inputDex = int(input("Which value for Dexterity? "))
+            if inputDex in daScores:
+                valid = True
+                daScores.remove(inputDex)
+            else:
+                print('*** not a valid score *** \n')
+
+        #choose intelligence
+        valid = False
+        while not valid:
+            print('SCORES:',daScores)
+            inputInt = int(input("Which value for Intelligence? "))
+            if inputInt in daScores:
+                valid = True
+                daScores.remove(inputInt)
+            else:
+                print('*** not a valid score *** \n')
+
+        #choose wisdom
+        valid = False
+        while not valid:
+            print('SCORES:',daScores)
+            inputWis = int(input("Which value for Wisdom? "))
+            if inputWis in daScores:
+                valid = True
+                daScores.remove(inputWis)
+            else:
+                print('*** not a valid score *** \n')
+
+        #charisma
+        inputCha = daScores[0]
+        print('Your Charisma will be {}.'.format(inputCha))
+
+        #name, potions, weapon, armor, and health
+        inputName = input("What is your character's name?: ")
+        inputPotionCount = randint(1,4)
+        inputWeapon = Weapon(name = "Longsword", base = 8, bonus = 0)
+        inputArmor = Armor(name = "Leather", base = 3, bonus = 0)
+        inputHealth = randint(1,8)
+        if inputCon > 12:
+            inputHealth += 1
+        
+        return Character(name = inputName, strength = inputStr,
+                         dexterity = inputDex, constitution = inputCon,
+                         intelligence = inputInt, wisdom = inputWis,
+                         charisma = inputCha, numberOfPotions = inputPotionCount,
+                         weapon = inputWeapon, armor = inputArmor,
+                         maxHealth = inputHealth)
 
     #main menu
     satisfied = False

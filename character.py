@@ -232,15 +232,16 @@ class Character(object):
     def __str__(self):
         info = "NAME:       " + self.name + "\n" +\
                "-----------------------------------\n" +\
-               "|STR| "+str(self.strength)+"\t"+str(self.strBonus)+"\n"+\
-               "|DEX| "+str(self.dexterity)+"\t"+str(self.dexBonus)+"\n"+\
-               "|CON| "+str(self.constitution)+"\t"+str(self.conBonus)+"\n"+\
-               "|INT| "+str(self.intelligence)+"\t"+str(self.intBonus)+"\n"+\
-               "|WIS| "+str(self.wisdom)+"\t"+str(self.wisBonus)+"\n"+\
-               "|CHA| "+str(self.charisma)+"\t"+str(self.chaBonus)+"\n"+\
+               "|STR| "+str(self.strength)+' '+"\t"+str(self.strBonus)+"\n"+\
+               "|DEX| "+str(self.dexterity)+' '+"\t"+str(self.dexBonus)+"\n"+\
+               "|CON| "+str(self.constitution)+' '+"\t"+str(self.conBonus)+"\n"+\
+               "|INT| "+str(self.intelligence)+' '+"\t"+str(self.intBonus)+"\n"+\
+               "|WIS| "+str(self.wisdom)+' '+"\t"+str(self.wisBonus)+"\n"+\
+               "|CHA| "+str(self.charisma)+' '+"\t"+str(self.chaBonus)+"\n"+\
                "-----------------------------------\n" +\
                "Potions: "+self.potionList+"\n"+\
                "AC:      "+str(self.AC)+"\n"+\
+               "Health:  "+str(self.health)+"\n"+\
                "-----------------------------------\n"
         return info
     

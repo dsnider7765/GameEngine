@@ -52,7 +52,7 @@ class Monster(Character):
             return "AI_error"
 
 class Orc(Monster):
- ''' generic Orc class
+    ''' generic Orc class
 
         this class '''
     def __init__(self, name = "Dorque da Orc"):
