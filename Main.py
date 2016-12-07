@@ -640,7 +640,7 @@ class Travel(tk.Frame):
             self.scrollbar = tk.Scrollbar(self)
             self.scrollbar.grid(row=0,column=2,sticky='nsw')
             self.text_widget = tk.Text(self, **kwargs)
-            self.text_widget.configure(yscrollcommand=self.scrollbar.set,width=0,height=0)
+            self.text_widget.configure(yscrollcommand=self.scrollbar.set)
             self.text_widget.grid(row=0,column=0,sticky='nsew')
             self.scrollbar.config(command=self.text_widget.yview)
 
@@ -650,7 +650,7 @@ class Travel(tk.Frame):
 
         def grid(self, *args, **kwargs):
             tk.Frame.grid(self, *args, **kwargs)
-            self.grid_propagate(False)
+            self.grid_propagate(True)
     def create_widgets(self):
         #makes view window
         self.viewImage = tk.PhotoImage(file='Development Land.gif')#place holder image
