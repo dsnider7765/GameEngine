@@ -9,8 +9,7 @@ import character as ch
 import monster as mon
 from random import randint
 
-BUTTON_COLOR = '#9494B8'
-TITLE_FONT = ("Helvetica", 18, "bold")
+TITLE_FONT = ("Helvetica", 22, "bold")
 CHAR_HELP_STR_TITLE = 'generate a character based on user input'
 CHAR_HELP_STR_SIMPLE='The user is asked which stat(str, dex, con, int, wis, cha) is most important, and which is least.  most important gets a value of 17, least gets a 9, and the rest get 12. This method is suitable for a 20-point character build using Pathfinder d20 rules.  This method has only a few choices, and results in moderate satisfaction for the user.'
 CHAR_HELP_STR_HARDCORE = 'hardcore - results are generated randomly using the 3d6 method, in standard stat block sequence: (str, dex, con, int, wis, cha). if none of the stats are over 12, then the entire set is re-rolled until it does. The user has no control over ability scores. This method is the easiest, but usually has the least satisfaction for the user.'
@@ -637,12 +636,15 @@ class Travel(tk.Frame):
             self.height = height
 
             tk.Frame.__init__(self, master, width=self.width, height=self.height)
-            self.scrollbar = tk.Scrollbar(self)
-            self.scrollbar.grid(row=0,column=2,sticky='nsw')
+            #self.scrollbar = tk.Scrollbar(self)
+            #self.scrollbar.grid(row=0,column=2,sticky='nsw')
             self.text_widget = tk.Text(self, **kwargs)
-            self.text_widget.configure(yscrollcommand=self.scrollbar.set)
+            #self.text_widget.configure(yscrollcommand=self.scrollbar.set,
+            #                           width=(self.width//12))
+            self.text_widget.configure(width=int(self.width//7.24637681)
+                                       ,height=int(self.height//12))
             self.text_widget.grid(row=0,column=0,sticky='nsew')
-            self.scrollbar.config(command=self.text_widget.yview)
+            #self.scrollbar.config(command=self.text_widget.yview)
 
         def pack(self, *args, **kwargs):
             tk.Frame.pack(self, *args, **kwargs)
@@ -650,35 +652,32 @@ class Travel(tk.Frame):
 
         def grid(self, *args, **kwargs):
             tk.Frame.grid(self, *args, **kwargs)
-            self.grid_propagate(True)
+            self.grid_propagate(False)
+    def cool_print(self,text='you forgot to give text!'):
+        for letter in text:
+            self.logText.text_widget.insert(tk.END,letter)
     def create_widgets(self):
         #makes view window
         self.viewImage = tk.PhotoImage(file='Development Land.gif')#place holder image
         self.viewLabel = tk.Label(self,image=self.viewImage)
         self.viewLabel.grid(row=0,column=0)
-        self.viewLabel.grid(row=0,column=0)
         #makes log
-        self.logText = self.Text2(self,width=500,height=500,font='-size 12')
-        self.logText.grid(row=0,column=1)
-        self.logText.text_widget.insert(0.0,'''hnjfkads hfjaksdf hdkjasf hkjasd fhdkjasl hf asdf dasf
-asdfd
-asf
-asdf
-asdf
-asdfdas fasd
-f adsf asdf asdfndkjasf hasdkjl fasd f
-asdf asdfbhjaskdf asdh fkgadkljsf adsf
-das
-fasd
- fasdf hdjasif hdkjas fhdkjasl fdas f
- asd
- f asd
- f asd fasdlf hasdjkf hjaskf hjaskdf hjdkasl fdas
- f asd fasdfkdas hfjkasdfa
- sd fas dfasdfjasdf
- asdf asdf asd
- ef asd fdasufas dfdas fasd
- ''')
+        self.logFrame = tk.Frame(self)
+        self.logFrame.grid(row=0,column=1)
+        self.logText = self.Text2(self.logFrame,width=500,height=500,
+                                  font='-size 12',wrap=tk.WORD)
+        self.logText.grid(row=0,column=0)
+        self.logScroll = tk.Scrollbar(self.logFrame,command=self.logText.text_widget.yview)
+        self.logScroll.grid(row=0,column=1,sticky='nsw')
+        self.logText.text_widget.config(yscrollcommand=self.logScroll.set)
+        #makes inventory grid
+        self.inventoryGrid = tk.Frame(self,width=300,height=200,
+                                      relief=tk.SUNKEN,borderwidth=5)
+        self.inventoryGrid.grid(row=1,column=0)
+        #makes button grid
+        self.buttonGrid = tk.Frame(self,width=450,height=450,
+                                   relief=tk.SUNKEN,borderwidth=5)
+        self.buttonGrid.grid(row=1,column=1)
 
          
 
