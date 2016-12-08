@@ -67,7 +67,9 @@ class RootApp(tk.Tk):
                                                   self.cheatsDescription[self.cheat]))
         else:
             print(self.cheatsDescription[self.cheat])
-
+    def stupid_mistake(self):
+        print("That was a stupid thing to do.... now I'm dead...")
+        self.destroy()
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
@@ -625,66 +627,143 @@ class Travel(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
+        self.controller.bind('<KP_7>', lambda e: self.potion())
+        self.controller.bind('<KP_8>', lambda e: self.north())
+        self.controller.bind('<KP_9>', lambda e: self.char_info())
+        self.controller.bind('<KP_4>', lambda e: self.west())
+        self.controller.bind('<KP_5>', lambda e: self.SI_handler())
+        self.controller.bind('<KP_6>', lambda e: self.east())
+        self.controller.bind('<KP_1>', lambda e: self.save())
+        self.controller.bind('<KP_2>', lambda e: self.south())
+        self.controller.bind('<KP_3>', lambda e: self.help())
+        self.controller.bind('<KP_Subtract>', lambda e: self.down())
+        self.controller.bind('<KP_Add>', lambda e: self.up())
+        self.controller.bind('<KP_Enter>', lambda e: self.SE_handler())
         for i in range(2):
             self.columnconfigure(i, weight=1)
             self.rowconfigure(i, weight=1)
         self.create_widgets()
-    class Text2(tk.Frame): # created by Miguel Martinez Lopez http://code.activestate.com/recipes/578887-text-widget-width-and-height-in-pixels-tkinter/
-        def __init__(self, master, width=0, height=0, **kwargs):
-            self.width = width
-            self.height = height
-
-            tk.Frame.__init__(self, master, width=self.width, height=self.height)
-            #self.scrollbar = tk.Scrollbar(self)
-            #self.scrollbar.grid(row=0,column=2,sticky='nsw')
-            self.text_widget = tk.Text(self, **kwargs)
-            #self.text_widget.configure(yscrollcommand=self.scrollbar.set,
-            #                           width=(self.width//12))
-            self.text_widget.configure(width=int(self.width//7.24637681)
-                                       ,height=int(self.height//12))
-            self.text_widget.grid(row=0,column=0,sticky='nsew')
-            #self.scrollbar.config(command=self.text_widget.yview)
-
-        def pack(self, *args, **kwargs):
-            tk.Frame.pack(self, *args, **kwargs)
-            self.pack_propagate(False)
-
-        def grid(self, *args, **kwargs):
-            tk.Frame.grid(self, *args, **kwargs)
-            self.grid_propagate(False)
+        
     def cool_print(self,text='you forgot to give text!'):
         for letter in text:
             self.logText.text_widget.insert(tk.END,letter)
+    def north(self):
+        print('You go North')
+
+    def south(self):
+        print('You go South')
+
+    def east(self):
+        print('You go East')
+
+    def west(self):
+        print('You go West')
+        
+    def up(self):
+        print('You went up')
+
+    def down(self):
+        print('You went down')
+        
+    def potion(self):
+        self.controller.player.heal()
+
+    def char_info(self):
+        print(self.controller.player)
+
+    def save(self):
+        print('I would save if it was important!')
+
+    def help(self):
+        print("I'm helpful!")
+
+    def SI_handler(self):
+        print('You find nothing in the nowhere-ness.')
+
+    def SE_handler(self):
+        print("Nothing to save, but I guess we're leaving!")
+        self.controller.destroy()
+        
     def create_widgets(self):
         #makes view window
         self.viewImage = tk.PhotoImage(file='Development Land.gif')#place holder image
-        self.viewLabel = tk.Label(self,image=self.viewImage)
+        self.viewLabel = tk.Label(self,image=self.viewImage,
+                                  relief=tk.SUNKEN,borderwidth=5)
         self.viewLabel.grid(row=0,column=0)
         #makes log
-        self.logFrame = tk.Frame(self)
+        self.logFrame = tk.Frame(self,relief=tk.SUNKEN,borderwidth=5)
         self.logFrame.grid(row=0,column=1)
-        self.logText = self.Text2(self.logFrame,width=500,height=500,
-                                  font='-size 12',wrap=tk.WORD)
-        self.logText.grid(row=0,column=0)
-        self.logScroll = tk.Scrollbar(self.logFrame,command=self.logText.text_widget.yview)
+        self.text_widget = tk.Text(self.logFrame,width=(int(500//7.24637681)-21),
+                                   height=int(500//12)-15,font='-size 12')
+        self.text_widget.grid(row=0,column=0)
+##        self.logText = self.Text2(self.logFrame,width=500,height=500,
+##                                  font='-size 12',wrap=tk.WORD)
+##        self.logText.grid(row=0,column=0)
+        self.logScroll = tk.Scrollbar(self.logFrame,command=self.text_widget.yview)
         self.logScroll.grid(row=0,column=1,sticky='nsw')
-        self.logText.text_widget.config(yscrollcommand=self.logScroll.set)
+        self.text_widget.configure(yscrollcommand=self.logScroll.set)
+##        self.logText.text_widget.config(yscrollcommand=self.logScroll.set)
         #makes inventory grid
-        self.inventoryGrid = tk.Frame(self,width=300,height=200,
+        self.inventoryGrid = tk.Frame(self,width=500,height=200,
                                       relief=tk.SUNKEN,borderwidth=5)
         self.inventoryGrid.grid(row=1,column=0)
         #makes button grid
-        self.buttonGrid = tk.Frame(self,width=450,height=450,
-                                   relief=tk.SUNKEN,borderwidth=5)
-        self.buttonGrid.grid(row=1,column=1)
+        self.buttonGrid = tk.Frame(self,relief=tk.SUNKEN,borderwidth=5)
+        self.buttonGrid.grid(row=1,column=1,sticky='nsew')
+        #make buttons
+        for i in range(3):
+            self.buttonGrid.columnconfigure(i,weight=1)
+            self.buttonGrid.rowconfigure(i,weight=1)
+        self.buttonGrid.columnconfigure(3,weight=1)
+        self.potionButton = tk.Button(self.buttonGrid,text='Potion\n\n7',
+                                      command=self.potion,font='-size 14 -weight bold')
+        self.potionButton.grid(row=0,column=0,sticky='nsew')
+        self.nButton = tk.Button(self.buttonGrid,text='North\n\n8',command=self.north,
+                                 font='-size 14 -weight bold')
+        self.nButton.grid(row=0,column=1,sticky='nsew')
+        #character info button 'CI'
+        self.CIButton = tk.Button(self.buttonGrid,text='Character\nInfo\n\n9',
+                                  command=self.char_info,font='-size 14 -weight bold')
+        self.CIButton.grid(row=0,column=2,sticky='nsew')
+        self.wButton = tk.Button(self.buttonGrid,text='West\n\n4',command=self.west,
+                                 font='-size 14 -weight bold')
+        self.wButton.grid(row=1,column=0,sticky='nsew')
+        #'SI'=Search/Interact
+        self.SIButton = tk.Button(self.buttonGrid,text='Search/\nInteract\n\n5',
+                                  command=self.SI_handler,font='-size 14 -weight bold')
+        self.SIButton.grid(row=1,column=1,sticky='nsew')
+        self.eButton = tk.Button(self.buttonGrid,text='East\n\n6',command=self.east,
+                                 font='-size 14 -weight bold')
+        self.eButton.grid(row=1,column=2,sticky='nsew')
+        self.saveButton = tk.Button(self.buttonGrid,text='Save\n\n1',command=self.save,
+                                    font='-size 14 -weight bold')
+        self.saveButton.grid(row=2,column=0,sticky='nsew')
+        self.sButton = tk.Button(self.buttonGrid,text='South\n\n2',command=self.south,
+                                 font='-size 14 -weight bold')
+        self.sButton.grid(row=2,column=1,sticky='nsew')
+        self.helpButton = tk.Button(self.buttonGrid,text='Help\n\n3',command=self.help,
+                                    font='-size 14 -weight bold')
+        self.helpButton.grid(row=2,column=2,sticky='nsew')
+        self.downButton = tk.Button(self.buttonGrid,text='Down\n\n-',command=self.down,
+                                    font='-size 14 -weight bold')
+        self.downButton.grid(row=0,column=3,sticky='nsew')
+        self.upButton = tk.Button(self.buttonGrid,text='Up\n\n+',command=self.up,
+                                  font='-size 14 -weight bold')
+        self.upButton.grid(row=1,column=3,sticky='nsew')
+        #SE=save/exit
+        self.SEButton = tk.Button(self.buttonGrid,text='Save/\nExit\n\nEnter',
+                                  command=self.SE_handler,font='-size 14 -weight bold')
+        self.SEButton.grid(row=2,column=3,sticky='nsew')
+        
+        
 
          
 
 # main
 root = RootApp()
 root.bind('<c>',lambda e: root.cheat_handler())
+root.bind('<q>',lambda e: root.stupid_mistake())
 root.title("Character Creator")
-root.geometry("1055x1185+200+0")
+root.geometry("1024x1024+200+0")
 
 root.mainloop()
